@@ -1,0 +1,156 @@
+:root {
+  --margin-img-LR: 10px;
+  --padding-vie: 6px;
+  --duration-animation-attaque: 700ms;
+}
+
+.personnages {
+  display: flex;
+}
+
+.personnage {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  order: 2;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+.first {
+  order: 1;
+}
+
+.espace {
+  height: 48px;
+}
+
+.pseudo {
+  text-align: center;
+  margin-bottom: 10px !important;
+}
+
+.personnage img {
+  width: calc(100% - (var(--margin-img-LR) * 2));
+  object-fit: cover;
+  border-radius: 100%;
+  border: 2px solid red;
+  margin: 0px var(--margin-img-LR);
+}
+
+.personnage p {
+  margin: 5px 15px;
+  margin-top: 20px;
+}
+
+.personnage button {
+  color: white;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 30px;
+  padding: 10px;
+  margin: 10px 10px;
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.personnage button:first-of-type {
+  margin-top: 0;
+}
+
+.luke img {
+  border-color: greenyellow;
+}
+
+.total-vie {
+  width: calc(100% - (var(--margin-img-LR) * 2));
+  height: 20px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 20px;
+  margin: 0px var(--margin-img-LR);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.vie {
+  margin-left: calc(var(--padding-vie) / 2);
+  height: calc(100% - var(--padding-vie));
+  width: calc(100% - var(--padding-vie));
+  background-color: rgb(145, 0, 0);
+  border-radius: 20px;
+}
+
+@media (max-width: 560px) {
+  .personnages {
+    flex-direction: column;
+  }
+  .personnage {
+    width: 100%;
+    margin: 20px 0px;
+  }
+}
+
+.animation-attaque-left-right {
+  animation: attaque-left-right var(--duration-animation-attaque);
+}
+
+.animation-attaque-right-left {
+  animation: attaque-right-left var(--duration-animation-attaque);
+}
+
+@keyframes attaque-left-right {
+  0% {
+    left: 0px;
+    animation-timing-function: ease-in-out;
+  }
+
+  35% {
+    left: -70px;
+    animation-timing-function: ease-in-out;
+  }
+
+  60% {
+    left: 50px;
+    animation-timing-function: ease-in-out;
+  }
+
+  80% {
+    left: -20px;
+    animation-timing-function: ease-in-out;
+  }
+
+  100% {
+    left: 0px;
+    animation-timing-function: ease-out;
+  }
+}
+
+@keyframes attaque-right-left {
+  0% {
+    left: 0px;
+    animation-timing-function: ease-in-out;
+  }
+
+  35% {
+    left: 70px;
+    animation-timing-function: ease-in-out;
+  }
+
+  60% {
+    left: -50px;
+    animation-timing-function: ease-in-out;
+  }
+
+  80% {
+    left: 20px;
+    animation-timing-function: ease-in-out;
+  }
+
+  100% {
+    left: 0px;
+    animation-timing-function: ease-out;
+  }
+}
