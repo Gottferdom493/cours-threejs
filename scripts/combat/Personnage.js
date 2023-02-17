@@ -1,4 +1,5 @@
 import { capitalize } from "../utils.js";
+import PopUp from "./PopUp.js";
 
 export default class Personnage {
   constructor(
@@ -14,14 +15,17 @@ export default class Personnage {
     this.pointDeVie = pointDeVie;
     this.pointDeVieInitial = pointDeVie;
     this.energie = energie;
+    this.energieInitiale = energie;
     this.estDuCoteObscure = estDuCoteObscure;
     this.jeu = jeu;
     this.attaques = attaques;
     this.estChoisi = estChoisi;
     this.nom = nom;
+    this.energieMinimum;
 
     this.creerHtmlBase(nom, imageSource)
     this.creerHtmlVie();
+    this.creerHtmlEnergie();
     this.createAttaques();
   }
 
@@ -52,13 +56,25 @@ export default class Personnage {
   }
 
   creerHtmlVie() {
-    this.creerParagraphe("Vie restante :");
+    this.creerParagrapheVie();
     const vieTotal = document.createElement("div");
-    vieTotal.classList.add("total-vie");
+    vieTotal.classList.add("total-bar");
     this.divVie = document.createElement("div");
     this.divVie.classList.add("vie");
+    this.divVie.classList.add("niveau-bar");
     this.divPersonnage.appendChild(vieTotal);
     vieTotal.appendChild(this.divVie);
+  }
+
+  creerHtmlEnergie() {
+    this.creerParagrapheEnergie();
+    const energieTotal = document.createElement("div");
+    energieTotal.classList.add("total-bar");
+    this.divEnergie = document.createElement("div");
+    this.divEnergie.classList.add("energie");
+    this.divEnergie.classList.add("niveau-bar");
+    this.divPersonnage.appendChild(energieTotal);
+    energieTotal.appendChild(this.divEnergie);
   }
 
   createAttaques() {
@@ -77,6 +93,13 @@ export default class Personnage {
           this.divPersonnage,
           classList
         );
+
+        if (
+          !this.energieMinimum ||
+          this.energieMinimum > attaque.energieNecessaire
+        ) {
+          this.energieMinimum = attaque.energieNecessaire
+        }
       }
       this.divPersonnage.classList.add("first");
     }
@@ -84,30 +107,74 @@ export default class Personnage {
 
   attaquerPersonnage(
     animationName,
-    attaqueChoisie
+    attaqueChoisie,
+    callback
   ) {
-    if (this.pointDeVie > 0) {
+    if (
+      this.pointDeVie > 0 &&
+      this.energie >= attaqueChoisie.energieNecessaire
+    ) {
       this.ajouteAnimationAttaque(
         animationName
       );
       this.jeu.ennemi.enleverDesPV(
         attaqueChoisie.degat
       );
+      this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+      callback();
+    } else if (
+      this.pointDeVie > 0 &&
+      this.energie >= this.energieMinimum
+    ) {
+      new PopUp(
+        "Tu n'as plus assez d'énergie pour effectuer cette attaque. Choisis-en une autre !",
+        () => {}
+      );
+    } else if (this.pointDeVie > 0) {
+      callback();
     } else {
       this.jeu.ennemi.gagne();
     }
+  }
+
+  diminuerEnergie(energieAttaque) {
+    const factor = 100 / this.energieInitiale;
+    this.energie = this.energie - energieAttaque;
+    this.divEnergie.style.width = `calc(${this.energie * factor}% - var(--padding-vie))`;
+    this.modifierTextContentEnergie();
   }
 
   enleverDesPV(pointDeVie) {
     const factor = 100 / this.pointDeVieInitial;
     this.pointDeVie = this.pointDeVie - pointDeVie;
     this.divVie.style.width = `calc(${this.pointDeVie * factor}% - var(--padding-vie))`;
+    this.modifierTextContentVie();
   }
 
   creerParagraphe(text) {
     const paragraphe = document.createElement("p");
     paragraphe.textContent = text;
     this.divPersonnage.appendChild(paragraphe);
+  }
+
+  creerParagrapheVie() {
+    this.paragrapheVie = document.createElement("p");
+    this.modifierTextContentVie();
+    this.divPersonnage.appendChild(this.paragrapheVie);
+  }
+
+  modifierTextContentVie() {
+    this.paragrapheVie.textContent = `Vie restante : ${this.pointDeVie} / ${this.pointDeVieInitial}`;
+  }
+
+  creerParagrapheEnergie() {
+    this.paragrapheEnergie = document.createElement("p");
+    this.modifierTextContentEnergie();
+    this.divPersonnage.appendChild(this.paragrapheEnergie);
+  }
+
+  modifierTextContentEnergie() {
+    this.paragrapheEnergie.textContent = `Energie restante : ${this.energie} / ${this.energieInitiale}`;
   }
 
   ajouteAnimationAttaque(animationName) {
@@ -140,5 +207,9 @@ export default class Personnage {
     p.textContent = `${ capitalize(this.nom) } a gagné !`;
 
     section.appendChild(p);
+  }
+
+  getPointDeViePourcentage() {
+    return this.pointDeVie / this.pointDeVieInitial;
   }
 }

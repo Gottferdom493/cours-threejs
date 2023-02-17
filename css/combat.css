@@ -63,7 +63,7 @@
   border-color: greenyellow;
 }
 
-.total-vie {
+.total-bar {
   width: calc(100% - (var(--margin-img-LR) * 2));
   height: 20px;
   background-color: black;
@@ -75,12 +75,68 @@
   justify-content: flex-start;
 }
 
-.vie {
+.niveau-bar {
   margin-left: calc(var(--padding-vie) / 2);
   height: calc(100% - var(--padding-vie));
   width: calc(100% - var(--padding-vie));
-  background-color: rgb(145, 0, 0);
   border-radius: 20px;
+}
+
+.vie {
+  background-color: rgb(145, 0, 0);
+}
+
+.energie {
+  background-color: rgb(0, 51, 145);
+}
+
+.pop-up-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.63);
+  z-index: 2;
+}
+
+.pop-up {
+  position: absolute;
+  top: 40vh;
+  left: 10%;
+  width: calc(80% - 40px);
+  z-index: 1;
+  background-color: black;
+  border: white solid 2px;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.pop-up button {
+  background-color: black;
+  border: white solid 2px;
+  border-radius: 20px;
+  color: white;
+  padding: 10px;
+  width: 100px;
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.pop-up button:hover {
+  border-color: black;
+  background-color: white;
+  color: black;
+}
+
+.pop-up p {
+  margin: 0;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 @media (max-width: 560px) {
