@@ -23,13 +23,15 @@
     </p>
     <div class="personnages">
       <div class="personnage vador">
-        <img src="assets/dark_vador.jpg" alt="dark vador">
+        <canvas id="canvas-vador"></canvas>
+        <!-- <img src="assets/dark_vador.jpg" alt="dark vador"> -->
         <button class="red-illumination" value="vador">
           Je choisis mon pote Dark Vador !
         </button>
       </div>
       <div class="personnage luke">
-        <img src="assets/luke.jpg" alt="luke skylwaker">
+        <canvas id="canvas-luke"></canvas>
+        <!-- <img src="assets/luke.jpg" alt="luke skylwaker"> -->
         <button class="green-illumination" value="luke">
           Je choisis mon pote Luke !
         </button>
@@ -51,6 +53,15 @@
   <footer>
     <p>Contact : l'étoile noire</p>
   </footer>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./node_modules/three/build/three.module.js",
+        "GLTFLoader": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+        "OrbitControls": "./node_modules/three/examples/jsm/controls/OrbitControls.js"
+      }
+    }
+  </script>
   <script src="scripts/index/main.js" type="module"></script>
 </body>
 </html>

@@ -25,9 +25,30 @@ export default class Ennemi extends Personnage {
   }
 
   selectionnerUneAttaque() {
-    let rand = Math.random() * (this.attaques.length - 1);
-    rand = Math.round(rand);
-    return this.attaques[rand];
+    // let rand = Math.random() * (this.attaques.length - 1);
+    // rand = Math.round(rand);
+    // return this.attaques[rand];
+
+    this.attaques.sort((a, b) => {
+      if (a.degat > b.degat) {
+        return -1;
+      } else if (a.degat < b.degat) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    let attaqueSelectionnee = this.attaques[this.attaques.length - 1];
+
+    for (let attaque of this.attaques) {
+      if (attaque.energieNecessaire <= this.energie) {
+        attaqueSelectionnee = attaque;
+        break;
+      }
+    }
+
+    return attaqueSelectionnee;
   }
 
   attaquerPersonnage(animationName, callback) {

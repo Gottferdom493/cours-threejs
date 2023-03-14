@@ -29,7 +29,7 @@ export default class Jeu {
       false,
       this,
       [
-        new Attaque("salto", 50, 50, this),
+        new Attaque("salto", 70, 40, this),
         new Attaque("tourni", 20, 30, this),
         new Attaque("pointe", 10, 10, this)
       ],
@@ -49,8 +49,8 @@ export default class Jeu {
       true,
       this,
       [
-        new Attaque("force", 40, 35, this),
-        new Attaque("envoyer son sabre", 30, 25, this),
+        new Attaque("force", 55, 25, this),
+        new Attaque("envoyer son sabre", 15, 20, this),
         new Attaque("regard perçant", 10, 10, this)
       ],
       estLePersonnageChoisi
