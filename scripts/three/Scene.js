@@ -19,6 +19,7 @@ export default class Scene {
     this.loadAsyncResources();
     this.createLights(colorLights);
     this.addEventOnResize();
+    this.addCursorGrabbingOnClick();
     this.animate();
   }
 
@@ -58,7 +59,7 @@ export default class Scene {
       0.1,
       1000
     );
-    this.camera.position.z = 8;
+    this.camera.position.z = 6;
     this.camera.position.y = 2;
   }
 
@@ -71,7 +72,8 @@ export default class Scene {
       this.camera,
       this.renderer.domElement
     );
-    controls.target.set(0, 2, 0);
+    controls.enableZoom = false;
+    controls.target.set(0, 2.5, 0);
     controls.update();
   }
 
@@ -121,6 +123,21 @@ export default class Scene {
 
   addEventOnResize() {
     window.addEventListener("resize", this.onResize.bind(this));
+  }
+
+  addCursorGrabbingOnClick() {
+    this.renderer.domElement.addEventListener(
+      "pointerdown",
+      (event) => {
+        event.target.style.cursor = "grabbing";
+      }
+    );
+    this.renderer.domElement.addEventListener(
+      "pointerup",
+      (event) => {
+        event.target.style.cursor = "grab";
+      }
+    );
   }
 
   animate() {
