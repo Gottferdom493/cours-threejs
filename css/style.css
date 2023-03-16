@@ -54,6 +54,30 @@ footer p {
   margin: 0;
 }
 
+@keyframes turn-loader {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: calc(50% - 15px);
+  left: calc(50% - 15px);
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  border-top: 4px solid greenyellow;
+  border-bottom: 4px solid greenyellow;
+  border-left: 4px solid red;
+  border-right: 4px solid red;
+  animation: turn-loader 1000ms linear infinite;
+}
+
 .green-illumination:hover {
   box-shadow: 0px 0px 7px 2px greenyellow;
 }

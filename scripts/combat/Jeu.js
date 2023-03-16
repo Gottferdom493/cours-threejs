@@ -1,6 +1,8 @@
 import Attaque from "./Attaque.js";
 import Ennemi from "./Ennemi.js";
 import Personnage from "./Personnage.js";
+import lukeImage from "../../assets/luke.jpg";
+import vadorImage from "../../assets/dark_vador.jpg";
 
 export default class Jeu {
   constructor() {
@@ -25,7 +27,7 @@ export default class Jeu {
       100,
       200,
       "luke",
-      "assets/luke.jpg",
+      lukeImage,
       false,
       this,
       [
@@ -45,7 +47,7 @@ export default class Jeu {
       150,
       150,
       "vador",
-      "assets/dark_vador.jpg",
+      vadorImage,
       true,
       this,
       [

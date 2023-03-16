@@ -1,29 +1,38 @@
 import * as THREE from "three";
-import { OrbitControls } from "OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Personnage3D from "./Personnage3D.js";
+import Loader from "../divers/Loader.js";
+import nx from "../../assets/hdri/nx.png";
+import ny from "../../assets/hdri/ny.png";
+import nz from "../../assets/hdri/nz.png";
+import px from "../../assets/hdri/px.png";
+import py from "../../assets/hdri/py.png";
+import pz from "../../assets/hdri/pz.png";
 
-export default class Scene {
+export default class GlobalScene {
   constructor(
     idCanvas,
-    classDiv,
+    canvasCssSelector,
     linksGltfPersonnages,
     colorLights
   ) {
-    this.divCanvas = document.querySelector(classDiv);
+    this.divCanvas = document.querySelector(canvasCssSelector);
     this.linksGltfPersonnages = linksGltfPersonnages;
 
     this.createScene();
     this.createCamera();
     this.createRenderer(idCanvas);
     this.createControls();
-    this.loadAsyncResources();
+    this.loadAsyncResources(canvasCssSelector);
     this.createLights(colorLights);
     this.addEventOnResize();
     this.addCursorGrabbingOnClick();
     this.animate();
   }
 
-  async loadAsyncResources() {
+  async loadAsyncResources(canvasCssSelector) {
+    this.loader = new Loader(canvasCssSelector);
+    this.loader.add();
     const texture = await this.createCubeTexture();
     this.createObjects(texture);
     return texture;
@@ -82,14 +91,13 @@ export default class Scene {
       const cubeTextureLoader =
         new THREE.CubeTextureLoader();
         cubeTextureLoader
-        .setPath("../../assets/hdri/")
         .load([
-          'px.png',
-          'nx.png',
-          'py.png',
-          'ny.png',
-          'pz.png',
-          'nz.png'
+          px,
+          nx,
+          py,
+          ny,
+          pz,
+          nz
         ], (texture) => {
           resolve(texture);
         });
@@ -108,7 +116,7 @@ export default class Scene {
   createObjects(texture) {
     for (let link of this.linksGltfPersonnages) {
       new Personnage3D(
-        this.scene,
+        this,
         link,
         texture
       );
