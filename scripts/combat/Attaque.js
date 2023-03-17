@@ -3,12 +3,14 @@ export default class Attaque {
     nom,
     energieNecessaire,
     degat,
-    jeu
+    jeu,
+    animationName
   ) {
     this.nom = nom;
     this.energieNecessaire = energieNecessaire;
     this.degat = degat;
     this.jeu = jeu;
+    this.animationName = animationName;
   }
 
   creerHtmlElmt(htmlParent, classList) {
@@ -23,38 +25,8 @@ export default class Attaque {
   addEventOnButton() {
     this.button.addEventListener(
       "click",
-      () => this.onClickOnButton()
+      () => this.jeu.lancerAttaquePersonnage(this)
     )
-  }
-
-  onClickOnButton() {
-    this.jeu.personnage.attaquerPersonnage(
-      "animation-attaque-left-right",
-      this,
-      this.apresAttaquePersonnage.bind(this)
-    );
-  }
-
-  apresAttaquePersonnage() {
-    this.desactiverTousLesBoutons();
-    setTimeout(() => {
-      this.jeu.ennemi.attaquerPersonnage(
-        "animation-attaque-right-left",
-        this.activerTousLesBoutons.bind(this)
-      );
-    }, 1000);
-  }
-
-  desactiverTousLesBoutons() {
-    for (let attaque of this.jeu.personnage.attaques) {
-      attaque.button.classList.add("disabled-but-visible");
-    }
-  }
-
-  activerTousLesBoutons() {
-    for (let attaque of this.jeu.personnage.attaques) {
-      attaque.button.classList.remove("disabled-but-visible");
-    }
   }
 }
 

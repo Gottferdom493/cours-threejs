@@ -2,16 +2,15 @@ import { capitalize } from "../utils.js";
 import PopUp from "./PopUp.js";
 
 export default class Personnage {
-  constructor(
+  constructor({
     pointDeVie,
     energie,
     nom,
-    imageSource,
     estDuCoteObscure,
     jeu,
     attaques,
     estChoisi
-  ) {
+  }) {
     this.pointDeVie = pointDeVie;
     this.pointDeVieInitial = pointDeVie;
     this.energie = energie;
@@ -23,13 +22,13 @@ export default class Personnage {
     this.nom = nom;
     this.energieMinimum;
 
-    this.creerHtmlBase(nom, imageSource)
+    this.creerHtmlBase(nom)
     this.creerHtmlVie();
     this.creerHtmlEnergie();
     this.createAttaques();
   }
 
-  creerHtmlBase(nom, imageSource) {
+  creerHtmlBase(nom) {
     this.divPersonnage = document.createElement("div");
     this.divPersonnage.classList.add("personnage");
     this.divPersonnage.classList.add(nom);
@@ -48,11 +47,6 @@ export default class Personnage {
       div.classList.add("espace");
       this.divPersonnage.appendChild(div);
     }
-
-    const img = document.createElement("img");
-    img.src = imageSource;
-    img.alt = nom;
-    this.divPersonnage.appendChild(img);
   }
 
   creerHtmlVie() {
@@ -105,36 +99,44 @@ export default class Personnage {
     }
   }
 
+  // resolve boolean : permet de lancer animation ennemi
+  // si true
   attaquerPersonnage(
     animationName,
-    attaqueChoisie,
-    callback
+    attaqueChoisie
   ) {
-    if (
-      this.pointDeVie > 0 &&
-      this.energie >= attaqueChoisie.energieNecessaire
-    ) {
-      this.ajouteAnimationAttaque(
-        animationName
-      );
-      this.jeu.ennemi.enleverDesPV(
-        attaqueChoisie.degat
-      );
-      this.diminuerEnergie(attaqueChoisie.energieNecessaire);
-      callback();
-    } else if (
-      this.pointDeVie > 0 &&
-      this.energie >= this.energieMinimum
-    ) {
-      new PopUp(
-        "Tu n'as plus assez d'énergie pour effectuer cette attaque. Choisis-en une autre !",
-        () => {}
-      );
-    } else if (this.pointDeVie > 0) {
-      callback();
-    } else {
-      this.jeu.ennemi.gagne();
-    }
+    return new Promise(async (resolve) => {
+      if (
+        this.pointDeVie > 0 &&
+        this.energie >= attaqueChoisie.energieNecessaire
+      ) {
+        this.ajouteAnimationAttaque(
+          animationName
+        );
+        await attaqueChoisie.jeu.globalScene.personnages3D[
+          attaqueChoisie.jeu.personnage.nom
+        ].playAnimation(attaqueChoisie.animationName);
+        this.jeu.ennemi.enleverDesPV(
+          attaqueChoisie.degat
+        );
+        this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+        resolve(true);
+      } else if (
+        this.pointDeVie > 0 &&
+        this.energie >= this.energieMinimum
+      ) {
+        new PopUp(
+          "Tu n'as plus assez d'énergie pour effectuer cette attaque. Choisis-en une autre !",
+          () => {}
+        );
+        resolve(false);
+      } else if (this.pointDeVie > 0) {
+        resolve(true);
+      } else {
+        this.jeu.ennemi.gagne();
+        resolve(false);
+      }
+    });
   }
 
   diminuerEnergie(energieAttaque) {
@@ -211,5 +213,17 @@ export default class Personnage {
 
   getPointDeViePourcentage() {
     return this.pointDeVie / this.pointDeVieInitial;
+  }
+
+  desactiverTousLesBoutons() {
+    for (let attaque of this.attaques) {
+      attaque.button.classList.add("disabled-but-visible");
+    }
+  }
+
+  activerTousLesBoutons() {
+    for (let attaque of this.attaques) {
+      attaque.button.classList.remove("disabled-but-visible");
+    }
   }
 }

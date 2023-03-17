@@ -1,7 +1,7 @@
 export default class Loader {
   constructor(cssDivSelector) {
     this.parent = document.querySelector(cssDivSelector);
-    this.createHtml(cssDivSelector);
+    this.createHtml();
   }
 
   createHtml() {

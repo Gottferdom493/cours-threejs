@@ -2,19 +2,29 @@ import GlobalScene from "../three/GlobalScene.js";
 import Form from "./Form.js";
 import "../../css/style.css";
 import "../../css/accueil.css";
-import lukeGltf from "../../assets/gltf/luke_v03.gltf";
+import lukeGltf from "../../assets/gltf/luke_v05.gltf";
 import vadorGltf from "../../assets/gltf/vador_v05.gltf";
 
 new Form();
-new GlobalScene(
-  "canvas-luke",
-  "#div-canvas-luke",
-  [lukeGltf],
-  0x00ff00
-);
-new GlobalScene(
-  "canvas-vador",
-  "#div-canvas-vador",
-  [vadorGltf],
-  0xff0000
-);
+new GlobalScene({
+  idCanvas: "canvas-luke",
+  divCanvasCssSelector: "#div-canvas-luke",
+  gltfPersonnages: [{
+    name: "luke",
+    gltf: lukeGltf,
+    initAnimation: "Idle"
+  }],
+  colorLights: 0x00ff00,
+  isOrbitControls: true
+});
+new GlobalScene({
+  idCanvas: "canvas-vador",
+  divCanvasCssSelector: "#div-canvas-vador",
+  gltfPersonnages: [{
+    name: "vador",
+    gltf: vadorGltf,
+    initAnimation: "idle"
+  }],
+  colorLights: 0xff0000,
+  isOrbitControls: true
+});

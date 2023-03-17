@@ -10,32 +10,41 @@ import py from "../../assets/hdri/py.png";
 import pz from "../../assets/hdri/pz.png";
 
 export default class GlobalScene {
-  constructor(
+  constructor({
     idCanvas,
-    canvasCssSelector,
-    linksGltfPersonnages,
-    colorLights
-  ) {
-    this.divCanvas = document.querySelector(canvasCssSelector);
-    this.linksGltfPersonnages = linksGltfPersonnages;
+    divCanvasCssSelector,
+    gltfPersonnages,
+    colorLights,
+    isOrbitControls,
+    cameraCoordonnees = { x: 0, y: 2, z: 6 },
+    cameraCoordonneesMobile = { x: 0, y: 2, z: 6 }
+  }) {
+    this.divCanvas = document.querySelector(divCanvasCssSelector);
+    this.gltfPersonnages = gltfPersonnages;
+    this.personnages3D = {};
+    this.cameraCoordonnees = cameraCoordonnees;
+    this.cameraCoordonneesMobile = cameraCoordonneesMobile;
+
+    this.sizeMobile = 700;
 
     this.createScene();
     this.createCamera();
     this.createRenderer(idCanvas);
-    this.createControls();
-    this.loadAsyncResources(canvasCssSelector);
+    if (isOrbitControls) {
+      this.createControls();
+      this.addCursorGrabbingOnClick();
+    }
+    this.loadAsyncResources(divCanvasCssSelector);
     this.createLights(colorLights);
     this.addEventOnResize();
-    this.addCursorGrabbingOnClick();
     this.animate();
   }
 
-  async loadAsyncResources(canvasCssSelector) {
-    this.loader = new Loader(canvasCssSelector);
+  async loadAsyncResources(divCanvasCssSelector) {
+    this.loader = new Loader(divCanvasCssSelector);
     this.loader.add();
     const texture = await this.createCubeTexture();
     this.createObjects(texture);
-    return texture;
   }
 
   createScene() {
@@ -68,8 +77,23 @@ export default class GlobalScene {
       0.1,
       1000
     );
-    this.camera.position.z = 6;
-    this.camera.position.y = 2;
+    if (window.innerWidth < this.sizeMobile) {
+      this.setCameraPositionMobile();
+    } else {
+      this.setCameraPosition();
+    }
+  }
+
+  setCameraPositionMobile() {
+    this.camera.position.z = this.cameraCoordonneesMobile.z;
+    this.camera.position.y = this.cameraCoordonneesMobile.y;
+    this.camera.position.x = this.cameraCoordonneesMobile.x;
+  }
+
+  setCameraPosition() {
+    this.camera.position.z = this.cameraCoordonnees.z;
+    this.camera.position.y = this.cameraCoordonnees.y;
+    this.camera.position.x = this.cameraCoordonnees.x;
   }
 
   getRatio() {
@@ -114,19 +138,39 @@ export default class GlobalScene {
   }
 
   createObjects(texture) {
-    for (let link of this.linksGltfPersonnages) {
-      new Personnage3D(
-        this,
-        link,
-        texture
-      );
+    this.objectsLoaded = 0;
+    for (let personnage of this.gltfPersonnages) {
+      this.personnages3D[personnage.name] = new Personnage3D({
+        globalScene: this,
+        gltfPath: personnage.gltf,
+        cubeTexture: texture,
+        coordonnees: personnage.coordonnees,
+        coordonneesMobile: personnage.coordonneesMobile,
+        rotation: personnage.rotation,
+        initAnimation: personnage.initAnimation
+      });
     }
   }
 
-  onResize() {
+  setPositionsPersonnage() {
+    for (let personnage of this.Personnage3D) {
+      if (window.innerWidth < this.sizeMobile) {
+        personnage.setPositionMobileVersion();
+      } else {
+        personnage.setPositionLaptopVersion();
+      }
+    }
+  }
+
+  onResize(event) {
     this.setSizeRenderer();
     this.camera.aspect = this.getRatio();
     this.camera.updateProjectionMatrix();
+    if (event.target.innerWidth < this.sizeMobile) {
+      this.setCameraPositionMobile();
+    } else {
+      this.setCameraPosition();
+    }
   }
 
   addEventOnResize() {

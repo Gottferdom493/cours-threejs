@@ -51,59 +51,71 @@ export default class Ennemi extends Personnage {
     return attaqueSelectionnee;
   }
 
-  attaquerPersonnage(animationName, callback) {
-    const attaqueSelectionnee = this.selectionnerUneAttaque();
-    if (
-      this.pointDeVie > 0 &&
-      this.energie >= attaqueSelectionnee.energieNecessaire
-    ) {
-      this.ajouteAnimationAttaque(
-        animationName
-      );
-      this.jeu.personnage.enleverDesPV(
-        attaqueSelectionnee.degat
-      );
-      this.diminuerEnergie(
-        attaqueSelectionnee.energieNecessaire
-      );
-      this.creerInfoBox(attaqueSelectionnee);
-      setTimeout(() => {
-        this.removeTextAttaque();
-        if (
-          this.jeu.personnage.pointDeVie > 0 &&
-          this.jeu.personnage.energie >= this.jeu.personnage.energieMinimum
-        ) {
-          callback();
-        } else if (
-          this.jeu.personnage.pointDeVie > 0 &&
-          this.energie >= attaqueSelectionnee.energieNecessaire
-        ) {
-          this.attaquerPersonnage(animationName, callback);
-        } else if (
-          this.jeu.personnage.getPointDeViePourcentage() > this.getPointDeViePourcentage()
-        ) {
-          this.jeu.personnage.gagne();
-        } else {
-          this.gagne();
-        }
-      }, 2000)
-    } else if (
-      this.pointDeVie > 0 &&
-      this.energie >= this.energieMinimum
-    ) {
-      this.attaquerPersonnage(animationName, callback);
-    } else if (this.pointDeVie > 0) {
-      this.createMessage("N'a pas assez d'énergie pour jouer.");
-      setTimeout(
-        () => {
-          this.removeMessage();
-          callback();
-        },
-        2000
-      )
-    } else {
-      this.jeu.personnage.gagne();
-    }
+  // resolve boolean activer tous les boutons
+  // pour permettre à l'utilisateur de jouer si true
+  attaquerPersonnage(animationName) {
+    return new Promise (async (resolve) => {
+      const attaqueSelectionnee = this.selectionnerUneAttaque();
+      if (
+        this.pointDeVie > 0 &&
+        this.energie >= attaqueSelectionnee.energieNecessaire
+      ) {
+        this.ajouteAnimationAttaque(
+          animationName
+        );
+        await attaqueSelectionnee.jeu.globalScene.personnages3D[
+          attaqueSelectionnee.jeu.ennemi.nom
+        ].playAnimation(attaqueSelectionnee.animationName);
+        this.jeu.personnage.enleverDesPV(
+          attaqueSelectionnee.degat
+        );
+        this.diminuerEnergie(
+          attaqueSelectionnee.energieNecessaire
+        );
+        this.creerInfoBox(attaqueSelectionnee);
+        setTimeout(() => {
+          this.removeTextAttaque();
+          if (
+            this.jeu.personnage.pointDeVie > 0 &&
+            this.jeu.personnage.energie >= this.jeu.personnage.energieMinimum
+          ) {
+            resolve(true);
+          } else if (
+            this.jeu.personnage.pointDeVie > 0 &&
+            this.energie >= attaqueSelectionnee.energieNecessaire
+          ) {
+            this.attaquerPersonnage(animationName);
+            resolve(false);
+          } else if (
+            this.jeu.personnage.getPointDeViePourcentage() > this.getPointDeViePourcentage()
+          ) {
+            this.jeu.personnage.gagne();
+            resolve(false);
+          } else {
+            this.gagne();
+            resolve(false);
+          }
+        }, 1500)
+      } else if (
+        this.pointDeVie > 0 &&
+        this.energie >= this.energieMinimum
+      ) {
+        this.attaquerPersonnage(animationName);
+        resolve(false);
+      } else if (this.pointDeVie > 0) {
+        this.createMessage("N'a pas assez d'énergie pour jouer.");
+        setTimeout(
+          () => {
+            this.removeMessage();
+            resolve(true);
+          },
+          2000
+        )
+      } else {
+        this.jeu.personnage.gagne();
+        resolve(false);
+      }
+    });
   }
 
   removeTextAttaque() {
