@@ -22,6 +22,8 @@ export default class Personnage {
     this.nom = nom;
     this.energieMinimum;
 
+    this.divPersonnages = document.querySelector(".personnages");
+
     this.creerHtmlBase(nom)
     this.creerHtmlVie();
     this.creerHtmlEnergie();
@@ -33,20 +35,21 @@ export default class Personnage {
     this.divPersonnage.classList.add("personnage");
     this.divPersonnage.classList.add(nom);
 
-    const divPersonnages =
-      document.querySelector(".personnages");
-    divPersonnages.appendChild(this.divPersonnage);
+    
+    this.divPersonnages.appendChild(this.divPersonnage);
 
     if (this.estChoisi) {
-      const pseudo = document.createElement("p");
-      pseudo.textContent = localStorage.getItem("pseudo");
-      pseudo.classList.add("pseudo");
-      this.divPersonnage.appendChild(pseudo);
+      this.createPseudo(localStorage.getItem("pseudo"));
     } else {
-      const div = document.createElement("div");
-      div.classList.add("espace");
-      this.divPersonnage.appendChild(div);
+      this.createPseudo(this.nom);
     }
+  }
+
+  createPseudo(text) {
+    const pseudo = document.createElement("p");
+    pseudo.textContent = text;
+    pseudo.classList.add("pseudo");
+    this.divPersonnage.appendChild(pseudo);
   }
 
   creerHtmlVie() {
@@ -73,7 +76,12 @@ export default class Personnage {
 
   createAttaques() {
     if (this.estChoisi) {
-      this.creerParagraphe("Mes attaques :");
+
+      const attaquesDiv = document.createElement("div");
+      attaquesDiv.classList.add("attaques");
+      document.querySelector(".jeu").appendChild(attaquesDiv);
+
+      this.creerParagraphe(attaquesDiv, "Mes attaques :");
 
       let classList;
       if (this.estDuCoteObscure) {
@@ -84,7 +92,7 @@ export default class Personnage {
 
       for (let attaque of this.attaques) {
         attaque.creerHtmlElmt(
-          this.divPersonnage,
+          attaquesDiv,
           classList
         );
 
@@ -153,10 +161,10 @@ export default class Personnage {
     this.modifierTextContentVie();
   }
 
-  creerParagraphe(text) {
+  creerParagraphe(htmlParent, text) {
     const paragraphe = document.createElement("p");
     paragraphe.textContent = text;
-    this.divPersonnage.appendChild(paragraphe);
+    htmlParent.appendChild(paragraphe);
   }
 
   creerParagrapheVie() {

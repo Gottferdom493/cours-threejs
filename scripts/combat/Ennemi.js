@@ -119,7 +119,7 @@ export default class Ennemi extends Personnage {
   }
 
   removeTextAttaque() {
-    this.divPersonnage.removeChild(this.pNomAttaque);
+    document.querySelector(".info").removeChild(this.pNomAttaque);
   }
 
   removeMessage() {
@@ -129,7 +129,7 @@ export default class Ennemi extends Personnage {
   creerInfoBox(attaque) {
     this.pNomAttaque = document.createElement("p");
     this.pNomAttaque.textContent = `${capitalize(this.jeu.ennemi.nom)} attaque ${capitalize(this.jeu.personnage.nom)} avec ${attaque.nom}`;
-    this.divPersonnage.appendChild(this.pNomAttaque);
+    document.querySelector(".info").appendChild(this.pNomAttaque);
   }
 
   createMessage(message) {

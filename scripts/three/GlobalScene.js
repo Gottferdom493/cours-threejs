@@ -153,11 +153,11 @@ export default class GlobalScene {
   }
 
   setPositionsPersonnage() {
-    for (let personnage of this.Personnage3D) {
+    for (let key of Object.keys(this.personnages3D)) {
       if (window.innerWidth < this.sizeMobile) {
-        personnage.setPositionMobileVersion();
+        this.personnages3D[key].setPositionMobileVersion();
       } else {
-        personnage.setPositionLaptopVersion();
+        this.personnages3D[key].setPositionLaptopVersion();
       }
     }
   }
@@ -171,6 +171,7 @@ export default class GlobalScene {
     } else {
       this.setCameraPosition();
     }
+    this.setPositionsPersonnage();
   }
 
   addEventOnResize() {

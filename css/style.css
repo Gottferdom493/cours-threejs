@@ -1,7 +1,6 @@
 :root {
   --margin-top-section: 20px;
   --height-header: 70px;
-  --margin-top-footer: 20px;
   --height-footer: 50px;
 }
 
@@ -20,6 +19,7 @@ header {
   border-bottom: 2px red solid;
   display: flex;
   align-items: center;
+  z-index: 1;
   justify-content: center;
 }
 
@@ -33,7 +33,7 @@ section {
   margin-top: calc(var(--margin-top-section) + var(--height-header));
   width: 50%;
   margin-left: 25%;
-  min-height: calc(100vh - var(--margin-top-section) - var(--height-header) - var(--height-footer) - var(--margin-top-footer));
+  min-height: calc(100vh - var(--margin-top-section) - var(--height-header) - var(--height-footer));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -49,7 +49,6 @@ footer {
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-top: 20px;
   z-index: 1;
 }
 

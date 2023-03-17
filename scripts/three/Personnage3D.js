@@ -42,7 +42,6 @@ export default class Personnage3D {
       if (window.innerWidth < this.globalScene.sizeMobile) {
         this.setPositionMobileVersion();
       } else {
-        console.log(window.innerHeight);
         this.setPositionLaptopVersion();
       }
 

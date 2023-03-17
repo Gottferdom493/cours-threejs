@@ -2,6 +2,7 @@ import Attaque from "./Attaque.js";
 import Ennemi from "./Ennemi.js";
 import Personnage from "./Personnage.js";
 import GlobalScene from "../three/GlobalScene.js";
+import Menu from "./Menu.js";
 
 import lukeGltf from "../../assets/gltf/luke_v05.gltf";
 import vadorGltf from "../../assets/gltf/vador_v05.gltf";
@@ -23,6 +24,8 @@ export default class Jeu {
       this.ennemi = this.createVador(estVador);
       this.personnage = this.createLuke(estLuke);
     }
+
+    this.menu = new Menu();
   }
 
   create3DElmts(estLuke, estVador) {
@@ -37,7 +40,7 @@ export default class Jeu {
       cameraCoordonneesMobile: {
         x: 0,
         y: 2.5,
-        z: 15
+        z: 9
       },
       gltfPersonnages: [
         {
@@ -123,6 +126,7 @@ export default class Jeu {
   }
 
   async lancerAttaquePersonnage(attaque) {
+    this.menu.onClickHeart();
     const lancerEnnemiAttaque =
       await this.personnage.attaquerPersonnage(
         "animation-attaque-left-right",
@@ -141,6 +145,7 @@ export default class Jeu {
     );
     if (activerLesBoutons) {
       this.personnage.activerTousLesBoutons();
+      this.menu.onClickWeapon();
     }
   }
 }
