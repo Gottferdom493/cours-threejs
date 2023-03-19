@@ -5,7 +5,7 @@ import GlobalScene from "../three/GlobalScene.js";
 import Menu from "./Menu.js";
 
 import lukeGltf from "../../assets/gltf/luke_v05.gltf";
-import vadorGltf from "../../assets/gltf/vador_v05.gltf";
+import vadorGltf from "../../assets/gltf/vador_v06.gltf";
 
 export default class Jeu {
   constructor() {

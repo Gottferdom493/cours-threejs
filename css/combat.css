@@ -221,6 +221,17 @@ nav img {
   text-align: center;
 }
 
+.results {
+  width: 100%;
+  position: absolute;
+  bottom: 100px;
+}
+
+.results p {
+  text-align: center;
+  font-weight: bold;
+}
+
 @media (max-width: 1300px) and (min-width: 701px) {
   .attaques {
     flex-direction: row;
@@ -255,6 +266,9 @@ nav img {
     left: calc(var(--width-nav-bar) + 2px);
     border: none;
     right: 0;
+  }
+  .results {
+    bottom: 20px;
   }
 }
 

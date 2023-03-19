@@ -60,19 +60,21 @@ export default class Ennemi extends Personnage {
         this.pointDeVie > 0 &&
         this.energie >= attaqueSelectionnee.energieNecessaire
       ) {
-        this.ajouteAnimationAttaque(
-          animationName
-        );
+        this.creerInfoBox(attaqueSelectionnee);
+
         await attaqueSelectionnee.jeu.globalScene.personnages3D[
           attaqueSelectionnee.jeu.ennemi.nom
         ].playAnimation(attaqueSelectionnee.animationName);
+
         this.jeu.personnage.enleverDesPV(
           attaqueSelectionnee.degat
         );
         this.diminuerEnergie(
           attaqueSelectionnee.energieNecessaire
         );
-        this.creerInfoBox(attaqueSelectionnee);
+
+        await this.jeu.personnage.estBlesse(animationName);
+
         setTimeout(() => {
           this.removeTextAttaque();
           if (

@@ -118,16 +118,15 @@ export default class Personnage {
         this.pointDeVie > 0 &&
         this.energie >= attaqueChoisie.energieNecessaire
       ) {
-        this.ajouteAnimationAttaque(
-          animationName
-        );
-        await attaqueChoisie.jeu.globalScene.personnages3D[
-          attaqueChoisie.jeu.personnage.nom
+        await this.jeu.globalScene.personnages3D[
+          this.jeu.personnage.nom
         ].playAnimation(attaqueChoisie.animationName);
         this.jeu.ennemi.enleverDesPV(
           attaqueChoisie.degat
         );
         this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+        
+        await this.jeu.ennemi.estBlesse(animationName);
         resolve(true);
       } else if (
         this.pointDeVie > 0 &&
@@ -145,6 +144,15 @@ export default class Personnage {
         resolve(false);
       }
     });
+  }
+
+  async estBlesse(animationName) {
+    this.ajouteAnimationAttaque(
+      animationName
+    );
+    await this.jeu.globalScene.personnages3D[
+      this.nom
+    ].playAnimation("punch");
   }
 
   diminuerEnergie(energieAttaque) {
@@ -211,12 +219,12 @@ export default class Personnage {
   }
 
   gagne() {
-    const section = document.getElementsByTagName("section")[0];
+    const results = document.querySelector(".results");
 
     const p = document.createElement("p");
     p.textContent = `${ capitalize(this.nom) } a gagné !`;
 
-    section.appendChild(p);
+    results.appendChild(p);
   }
 
   getPointDeViePourcentage() {
