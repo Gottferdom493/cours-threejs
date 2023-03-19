@@ -11,6 +11,7 @@ import pz from "../../assets/hdri/pz.png";
 
 export default class GlobalScene {
   constructor({
+    jeu,
     idCanvas,
     divCanvasCssSelector,
     gltfPersonnages,
@@ -19,6 +20,7 @@ export default class GlobalScene {
     cameraCoordonnees = { x: 0, y: 2, z: 6 },
     cameraCoordonneesMobile = { x: 0, y: 2, z: 6 }
   }) {
+    this.jeu = jeu;
     this.divCanvas = document.querySelector(divCanvasCssSelector);
     this.gltfPersonnages = gltfPersonnages;
     this.personnages3D = {};
@@ -149,6 +151,13 @@ export default class GlobalScene {
         rotation: personnage.rotation,
         initAnimation: personnage.initAnimation
       });
+    }
+  }
+
+  onceGltfAreLoaded() {
+    if (this.gltfPersonnages.length === this.objectsLoaded) {
+      this.loader.remove();
+      this.jeu.personnage.activerTousLesBoutons();
     }
   }
 

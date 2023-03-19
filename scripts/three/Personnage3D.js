@@ -49,7 +49,7 @@ export default class Personnage3D {
 
       this.setAnimations(gltf.animations, gltf.scene);
 
-      this.removeLoaderOnceImport();
+      this.globalScene.onceGltfAreLoaded();
     })
   }
 
@@ -72,12 +72,6 @@ export default class Personnage3D {
         node.material.envMapIntensity = 0.5;
       }
     });
-  }
-
-  removeLoaderOnceImport() {
-    if (this.globalScene.gltfPersonnages.length === this.globalScene.objectsLoaded) {
-      this.globalScene.loader.remove();
-    }
   }
 
   setAnimations(animationsGltf, sceneGltf) {

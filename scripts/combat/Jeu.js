@@ -25,11 +25,13 @@ export default class Jeu {
       this.personnage = this.createLuke(estLuke);
     }
 
+    this.personnage.desactiverTousLesBoutons();
     this.menu = new Menu();
   }
 
   create3DElmts(estLuke, estVador) {
     this.globalScene = new GlobalScene({
+      jeu: this,
       idCanvas: "canvas",
       divCanvasCssSelector: ".canvas",
       cameraCoordonnees: {
@@ -126,6 +128,7 @@ export default class Jeu {
   }
 
   async lancerAttaquePersonnage(attaque) {
+    this.personnage.desactiverTousLesBoutons();
     this.menu.onClickHeart();
     const lancerEnnemiAttaque =
       await this.personnage.attaquerPersonnage(
@@ -138,7 +141,6 @@ export default class Jeu {
   }
 
   async apresAttaquePersonnage() {
-    this.personnage.desactiverTousLesBoutons();
     const activerLesBoutons =
       await this.ennemi.attaquerPersonnage(
       "animation-attaque-right-left",
