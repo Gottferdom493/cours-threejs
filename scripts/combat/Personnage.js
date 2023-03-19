@@ -75,36 +75,43 @@ export default class Personnage {
   }
 
   createAttaques() {
+    let attaquesDiv;
+    let classList;
     if (this.estChoisi) {
-
-      const attaquesDiv = document.createElement("div");
+      attaquesDiv = document.createElement("div");
       attaquesDiv.classList.add("attaques");
       document.querySelector(".jeu").appendChild(attaquesDiv);
 
       this.creerParagraphe(attaquesDiv, "Mes attaques :");
 
-      let classList;
       if (this.estDuCoteObscure) {
         classList = ["red-illumination"];
       } else {
         classList = ["green-illumination"];
       }
 
-      for (let attaque of this.attaques) {
+      this.divPersonnage.classList.add("first");
+    }
+
+    for (let attaque of this.attaques) {
+      if (this.estChoisi) {
         attaque.creerHtmlElmt(
           attaquesDiv,
           classList
         );
-
-        if (
-          !this.energieMinimum ||
-          this.energieMinimum > attaque.energieNecessaire
-        ) {
-          this.energieMinimum = attaque.energieNecessaire
-        }
       }
-      this.divPersonnage.classList.add("first");
+      if (
+        !this.energieMinimum ||
+        this.energieMinimum > attaque.energieNecessaire
+      ) {
+        this.energieMinimum = attaque.energieNecessaire
+      }
     }
+  }
+
+  // chance = 1 / 10 ou 1 / 2 par exemple
+  echecCritique(chance) {
+    return Math.random() < chance;
   }
 
   // resolve boolean : permet de lancer animation ennemi
@@ -118,16 +125,33 @@ export default class Personnage {
         this.pointDeVie > 0 &&
         this.energie >= attaqueChoisie.energieNecessaire
       ) {
-        await this.jeu.globalScene.personnages3D[
-          this.jeu.personnage.nom
-        ].playAnimation(attaqueChoisie.animationName);
-        this.jeu.ennemi.enleverDesPV(
-          attaqueChoisie.degat
-        );
-        this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+        if (
+          this.echecCritique(
+            this.jeu.chanceEchecCritique
+          )
+        ) {
+          this.creerInfo("Echec critique : -10 PV");
+          this.enleverDesPV(10);
+          this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+          await this.estBlesse(animationName);
+          await this.removeInfo(1000);
+        } else {
+          await this.jeu.globalScene.personnages3D[
+            this.jeu.personnage.nom
+          ].playAnimation(attaqueChoisie.animationName);
+          this.jeu.ennemi.enleverDesPV(
+            attaqueChoisie.degat
+          );
+          this.diminuerEnergie(attaqueChoisie.energieNecessaire);
+          await this.jeu.ennemi.estBlesse(animationName);
+        }
         
-        await this.jeu.ennemi.estBlesse(animationName);
-        resolve(true);
+        if (this.pointDeVie > 0) {
+          resolve(true);
+        } else {
+          this.jeu.ennemi.gagne();
+          resolve(false);
+        }
       } else if (
         this.pointDeVie > 0 &&
         this.energie >= this.energieMinimum
@@ -136,6 +160,7 @@ export default class Personnage {
           "Tu n'as plus assez d'énergie pour effectuer cette attaque. Choisis-en une autre !",
           () => {}
         );
+        this.activerTousLesBoutons();
         resolve(false);
       } else if (this.pointDeVie > 0) {
         resolve(true);
@@ -189,6 +214,21 @@ export default class Personnage {
     this.paragrapheEnergie = document.createElement("p");
     this.modifierTextContentEnergie();
     this.divPersonnage.appendChild(this.paragrapheEnergie);
+  }
+
+  creerInfo(text) {
+    this.info = document.createElement("p");
+    this.info.textContent = text;
+    document.querySelector(".info").appendChild(this.info);
+  }
+
+  removeInfo(miliseconds = 0) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        document.querySelector(".info").removeChild(this.info);
+        resolve();
+      }, miliseconds)
+    });
   }
 
   modifierTextContentEnergie() {

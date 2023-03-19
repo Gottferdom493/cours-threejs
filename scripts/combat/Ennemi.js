@@ -25,10 +25,6 @@ export default class Ennemi extends Personnage {
   }
 
   selectionnerUneAttaque() {
-    // let rand = Math.random() * (this.attaques.length - 1);
-    // rand = Math.round(rand);
-    // return this.attaques[rand];
-
     this.attaques.sort((a, b) => {
       if (a.degat > b.degat) {
         return -1;
@@ -60,23 +56,36 @@ export default class Ennemi extends Personnage {
         this.pointDeVie > 0 &&
         this.energie >= attaqueSelectionnee.energieNecessaire
       ) {
-        this.creerInfoBox(attaqueSelectionnee);
+        if (
+          this.echecCritique(
+            this.jeu.chanceEchecCritique
+          )
+        ) {
+          this.creerInfo(
+            `${capitalize(this.nom)} fait un echec critique : - 10 PV`
+          );
+          this.enleverDesPV(10);
+          this.diminuerEnergie(attaqueSelectionnee.energieNecessaire);
+          this.estBlesse();
+        } else {
+          this.creerInfo(`${capitalize(this.jeu.ennemi.nom)} attaque ${capitalize(this.jeu.personnage.nom)} avec ${attaqueSelectionnee.nom}`);
 
-        await attaqueSelectionnee.jeu.globalScene.personnages3D[
-          attaqueSelectionnee.jeu.ennemi.nom
-        ].playAnimation(attaqueSelectionnee.animationName);
+          await attaqueSelectionnee.jeu.globalScene.personnages3D[
+            attaqueSelectionnee.jeu.ennemi.nom
+          ].playAnimation(attaqueSelectionnee.animationName);
+  
+          this.jeu.personnage.enleverDesPV(
+            attaqueSelectionnee.degat
+          );
+          this.diminuerEnergie(
+            attaqueSelectionnee.energieNecessaire
+          );
+  
+          await this.jeu.personnage.estBlesse(animationName);
+        }
 
-        this.jeu.personnage.enleverDesPV(
-          attaqueSelectionnee.degat
-        );
-        this.diminuerEnergie(
-          attaqueSelectionnee.energieNecessaire
-        );
-
-        await this.jeu.personnage.estBlesse(animationName);
-
-        setTimeout(() => {
-          this.removeTextAttaque();
+        setTimeout(async () => {
+          await this.removeInfo();
           if (
             this.jeu.personnage.pointDeVie > 0 &&
             this.jeu.personnage.energie >= this.jeu.personnage.energieMinimum
@@ -84,18 +93,12 @@ export default class Ennemi extends Personnage {
             resolve(true);
           } else if (
             this.jeu.personnage.pointDeVie > 0 &&
-            this.energie >= attaqueSelectionnee.energieNecessaire
+            this.energie >= this.energieMinimum
           ) {
             this.attaquerPersonnage(animationName);
             resolve(false);
-          } else if (
-            this.jeu.personnage.getPointDeViePourcentage() > this.getPointDeViePourcentage()
-          ) {
-            this.jeu.personnage.gagne();
-            resolve(false);
           } else {
-            this.gagne();
-            resolve(false);
+            this.checkWhoWin(resolve);
           }
         }, 1500)
       } else if (
@@ -105,11 +108,20 @@ export default class Ennemi extends Personnage {
         this.attaquerPersonnage(animationName);
         resolve(false);
       } else if (this.pointDeVie > 0) {
-        this.createMessage("N'a pas assez d'énergie pour jouer.");
+        this.creerInfo(
+          `${capitalize(this.nom)} n'a pas assez d'énergie pour jouer.`
+        );
         setTimeout(
-          () => {
-            this.removeMessage();
-            resolve(true);
+          async () => {
+            await this.removeInfo();
+            if (
+              this.jeu.personnage.pointDeVie > 0 &&
+              this.jeu.personnage.energie >= this.jeu.personnage.energieMinimum
+            ) {
+              resolve(true);
+            } else {
+              this.checkWhoWin(resolve);
+            }
           },
           2000
         )
@@ -120,23 +132,15 @@ export default class Ennemi extends Personnage {
     });
   }
 
-  removeTextAttaque() {
-    document.querySelector(".info").removeChild(this.pNomAttaque);
-  }
-
-  removeMessage() {
-    this.divPersonnage.removeChild(this.message);
-  }
-
-  creerInfoBox(attaque) {
-    this.pNomAttaque = document.createElement("p");
-    this.pNomAttaque.textContent = `${capitalize(this.jeu.ennemi.nom)} attaque ${capitalize(this.jeu.personnage.nom)} avec ${attaque.nom}`;
-    document.querySelector(".info").appendChild(this.pNomAttaque);
-  }
-
-  createMessage(message) {
-    this.message = document.createElement("p");
-    this.message.textContent = message;
-    this.divPersonnage.appendChild(this.message);
+  checkWhoWin(resolve) {
+    if (
+      this.jeu.personnage.getPointDeViePourcentage() > this.getPointDeViePourcentage()
+    ) {
+      this.jeu.personnage.gagne();
+      resolve(false);
+    } else {
+      this.gagne();
+      resolve(false);
+    }
   }
 }

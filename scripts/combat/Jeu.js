@@ -9,6 +9,8 @@ import vadorGltf from "../../assets/gltf/vador_v06.gltf";
 
 export default class Jeu {
   constructor() {
+    this.chanceEchecCritique = 1 / 5;
+
     const nomPersonnageChoisi =
       localStorage.getItem("jediChoisi");
 
@@ -100,7 +102,7 @@ export default class Jeu {
       estDuCoteObscure: false,
       jeu: this,
       attaques: [
-        new Attaque("salto", 70, 40, this, "salto"),
+        new Attaque("salto", 200, 40, this, "salto"),
         new Attaque("tourni", 20, 30, this, "tourni"),
         new Attaque("pointe", 10, 10, this, "pointe")
       ],
