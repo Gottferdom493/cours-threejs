@@ -106,6 +106,16 @@ form button {
   border-radius: 20px;
 }
 
+.color input {
+  width: 50px;
+  padding: 2px;
+  border-radius: 0;
+}
+
+.color label {
+  min-width: 150px;
+}
+
 @media (max-width: 560px) {
   .personnages {
     flex-direction: column;

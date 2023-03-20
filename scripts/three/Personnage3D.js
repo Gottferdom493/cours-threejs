@@ -10,7 +10,8 @@ export default class Personnage3D {
     coordonnees = { x: 0, y: 0, z: 0 },
     coordonneesMobile = { x: 0, y: 0, z: 0 },
     rotation = { x: 0, y: 0, z: 0 },
-    initAnimation
+    initAnimation,
+    needChangeColorSaber = false
   }) {
     this.globalScene = globalScene;
     this.coordonnees = coordonnees;
@@ -21,6 +22,8 @@ export default class Personnage3D {
     this.initAnimation = initAnimation;
 
     this.clock = new THREE.Clock();
+
+    this.needChangeColorSaber = needChangeColorSaber;
 
     this.importGLTF(gltfPath, cubeTexture);
     this.animate();
@@ -36,6 +39,7 @@ export default class Personnage3D {
         gltf.scene,
         cubeTexture
       );
+      this.updateColorSaberWithLocalStorage();
 
       this.gltf = gltf;
 
@@ -68,10 +72,28 @@ export default class Personnage3D {
   updateTextureSceneGltf(sceneGltf, cubeTexture) {
     sceneGltf.traverse((node) => {
       if (node.isMesh) {
+        if (node.name.includes("sabre")) {
+          this.materialSaber = node.material;
+        }
         node.material.envMap = cubeTexture;
         node.material.envMapIntensity = 0.5;
       }
     });
+  }
+
+  updateColorSaber(colorSaber) {
+    if (colorSaber) {
+      this.materialSaber.emissive = new THREE.Color(
+        colorSaber
+      );
+    }
+  }
+
+  updateColorSaberWithLocalStorage() {
+    const colorFromStorage = localStorage.getItem("colorSaber");
+    if (this.needChangeColorSaber && colorFromStorage) {
+      this.updateColorSaber(colorFromStorage);
+    }
   }
 
   setAnimations(animationsGltf, sceneGltf) {

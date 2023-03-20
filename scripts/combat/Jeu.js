@@ -70,7 +70,8 @@ export default class Jeu {
             y: estVador ? 60 : -60,
             z: 0
           },
-          initAnimation: "idle"
+          initAnimation: "idle",
+          needChangeColorSaber: estVador
         },
         {
           name: "luke",
@@ -90,7 +91,8 @@ export default class Jeu {
             y: estLuke ? 60 : -60,
             z: 0
           },
-          initAnimation: "Idle"
+          initAnimation: "Idle",
+          needChangeColorSaber: estLuke
         }
       ],
       colorLights: 0xff0000

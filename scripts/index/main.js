@@ -6,8 +6,8 @@ import "../../assets/favicon.ico";
 import lukeGltf from "../../assets/gltf/luke_v05.gltf";
 import vadorGltf from "../../assets/gltf/vador_v06.gltf";
 
-new Form();
-new GlobalScene({
+const globalScenes = [];
+globalScenes.push(new GlobalScene({
   idCanvas: "canvas-luke",
   divCanvasCssSelector: "#div-canvas-luke",
   gltfPersonnages: [{
@@ -17,8 +17,8 @@ new GlobalScene({
   }],
   colorLights: 0x00ff00,
   isOrbitControls: true
-});
-new GlobalScene({
+}));
+globalScenes.push(new GlobalScene({
   idCanvas: "canvas-vador",
   divCanvasCssSelector: "#div-canvas-vador",
   gltfPersonnages: [{
@@ -28,4 +28,5 @@ new GlobalScene({
   }],
   colorLights: 0xff0000,
   isOrbitControls: true
-});
+}));
+new Form(globalScenes);

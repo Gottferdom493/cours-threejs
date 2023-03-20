@@ -1,5 +1,7 @@
 export default class Form {
-  constructor() {
+  constructor(globalScenes) {
+    this.globalScenes = globalScenes;
+
     this.buttons = document.querySelectorAll(
       ".personnages button"
     );
@@ -11,6 +13,7 @@ export default class Form {
     this.validatedInputs = [];
 
     this.showForm();
+    this.onSelectColor();
     this.checkInputsWithEvent();
     this.goToFightPage();
   }
@@ -22,6 +25,24 @@ export default class Form {
         () => this.onClickButton(button)
       );
     }
+  }
+
+  onSelectColor() {
+    document.querySelector(".color input")
+      .addEventListener("input", (event) => {
+        for (let scene of this.globalScenes) {
+          if (
+            scene.idCanvas.includes(this.nomPersonnageSelectionne)
+          ) {
+            const color = event.target.value;
+            scene.personnages3D[
+              this.nomPersonnageSelectionne
+            ].updateColorSaber(color);
+            localStorage.setItem("colorSaber", color)
+            break;
+          }
+        }
+    })
   }
   
   onClickButton(button) {
@@ -35,6 +56,8 @@ export default class Form {
       this.disabledHtmlElmt(this.luke);
       this.submitButton.classList.add("red-illumination");
     }
+
+    this.nomPersonnageSelectionne = button.value;
   
     localStorage.setItem("jediChoisi", button.value);
 

@@ -22,6 +22,7 @@ export default class GlobalScene {
   }) {
     this.jeu = jeu;
     this.divCanvas = document.querySelector(divCanvasCssSelector);
+    this.idCanvas = idCanvas;
     this.gltfPersonnages = gltfPersonnages;
     this.personnages3D = {};
     this.cameraCoordonnees = cameraCoordonnees;
@@ -149,7 +150,8 @@ export default class GlobalScene {
         coordonnees: personnage.coordonnees,
         coordonneesMobile: personnage.coordonneesMobile,
         rotation: personnage.rotation,
-        initAnimation: personnage.initAnimation
+        initAnimation: personnage.initAnimation,
+        needChangeColorSaber: personnage.needChangeColorSaber
       });
     }
   }
