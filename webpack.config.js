@@ -15,7 +15,7 @@ let config = {
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.(png|jpe?g|gif|gltf|svg|mp4|webm|mp3|ico)$/i,
+        test: /\.(png|jpe?g|gif|gltf|glb|svg|mp4|webm|mp3|ico)$/i,
         use: [
           {
             loader: 'file-loader',

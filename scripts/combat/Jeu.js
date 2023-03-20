@@ -4,8 +4,8 @@ import Personnage from "./Personnage.js";
 import GlobalScene from "../three/GlobalScene.js";
 import Menu from "./Menu.js";
 
-import lukeGltf from "../../assets/gltf/luke_v05.gltf";
-import vadorGltf from "../../assets/gltf/vador_v06.gltf";
+import lukeGltf from "../../assets/gltf/luke_v05.glb";
+import vadorGltf from "../../assets/gltf/vador_v06.glb";
 
 import piouFriouSound from "../../assets/sounds/piou-friou.mp3";
 import friouSound from "../../assets/sounds/friou.mp3";

@@ -3,8 +3,8 @@ import Form from "./Form.js";
 import "../../css/style.css";
 import "../../css/accueil.css";
 import "../../assets/favicon.ico";
-import lukeGltf from "../../assets/gltf/luke_v05.gltf";
-import vadorGltf from "../../assets/gltf/vador_v06.gltf";
+import lukeGltf from "../../assets/gltf/luke_v05.glb";
+import vadorGltf from "../../assets/gltf/vador_v06.glb";
 
 const globalScenes = [];
 globalScenes.push(new GlobalScene({
