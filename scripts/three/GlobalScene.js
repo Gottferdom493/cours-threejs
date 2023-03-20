@@ -157,7 +157,9 @@ export default class GlobalScene {
   onceGltfAreLoaded() {
     if (this.gltfPersonnages.length === this.objectsLoaded) {
       this.loader.remove();
-      this.jeu.personnage.activerTousLesBoutons();
+      if (this.jeu) {
+        this.jeu.personnage.activerTousLesBoutons();
+      }
     }
   }
 

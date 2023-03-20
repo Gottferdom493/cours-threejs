@@ -68,6 +68,7 @@ export default class Ennemi extends Personnage {
           this.diminuerEnergie(attaqueSelectionnee.energieNecessaire);
           this.estBlesse();
         } else {
+          attaqueSelectionnee.lancerSonAttaque();
           this.creerInfo(`${capitalize(this.jeu.ennemi.nom)} attaque ${capitalize(this.jeu.personnage.nom)} avec ${attaqueSelectionnee.nom}`);
 
           await attaqueSelectionnee.jeu.globalScene.personnages3D[

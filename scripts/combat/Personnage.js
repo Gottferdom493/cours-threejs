@@ -1,6 +1,11 @@
 import { capitalize } from "../utils.js";
 import PopUp from "./PopUp.js";
 
+import crie1Sound from "../../assets/sounds/crie1.mp3";
+import crie2Sound from "../../assets/sounds/crie2.mp3";
+import crie3Sound from "../../assets/sounds/crie3.mp3";
+import applauseSound from "../../assets/sounds/applause.mp3";
+
 export default class Personnage {
   constructor({
     pointDeVie,
@@ -136,6 +141,7 @@ export default class Personnage {
           await this.estBlesse(animationName);
           await this.removeInfo(1000);
         } else {
+          attaqueChoisie.lancerSonAttaque();
           await this.jeu.globalScene.personnages3D[
             this.jeu.personnage.nom
           ].playAnimation(attaqueChoisie.animationName);
@@ -172,6 +178,11 @@ export default class Personnage {
   }
 
   async estBlesse(animationName) {
+    const sounds = [crie1Sound, crie2Sound, crie3Sound];
+    const index = Math.floor(Math.random() * sounds.length);
+    const sound = new Audio(sounds[index]);
+    sound.volume = 0.5;
+    sound.play();
     this.ajouteAnimationAttaque(
       animationName
     );
@@ -265,6 +276,13 @@ export default class Personnage {
     p.textContent = `${ capitalize(this.nom) } a gagné !`;
 
     results.appendChild(p);
+
+    if (this.estChoisi) {
+      const sound = new Audio(applauseSound);
+      sound.volume = 0.6;
+      sound.play();
+      this.jeu.lancerConfetti();
+    }
   }
 
   getPointDeViePourcentage() {

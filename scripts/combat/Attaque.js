@@ -1,16 +1,20 @@
+import clickSound from "../../assets/sounds/click.mp3";
+
 export default class Attaque {
   constructor(
     nom,
     energieNecessaire,
     degat,
     jeu,
-    animationName
+    animationName,
+    sound
   ) {
     this.nom = nom;
     this.energieNecessaire = energieNecessaire;
     this.degat = degat;
     this.jeu = jeu;
     this.animationName = animationName;
+    this.sound = sound;
   }
 
   creerHtmlElmt(htmlParent, classList) {
@@ -25,8 +29,21 @@ export default class Attaque {
   addEventOnButton() {
     this.button.addEventListener(
       "click",
-      () => this.jeu.lancerAttaquePersonnage(this)
+      () => {
+        const audio = new Audio(clickSound);
+        audio.volume = 0.1;
+        audio.play();
+        
+        this.jeu.lancerAttaquePersonnage(this);
+      }
     )
+  }
+
+  lancerSonAttaque() {
+    if (this.sound) {
+      const audioAttaique = new Audio(this.sound);
+      audioAttaique.play();
+    }
   }
 }
 

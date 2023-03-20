@@ -7,6 +7,11 @@ import Menu from "./Menu.js";
 import lukeGltf from "../../assets/gltf/luke_v05.gltf";
 import vadorGltf from "../../assets/gltf/vador_v06.gltf";
 
+import piouFriouSound from "../../assets/sounds/piou-friou.mp3";
+import friouSound from "../../assets/sounds/friou.mp3";
+import lightSaberSound from "../../assets/sounds/light-saber.mp3";
+import piouSound from "../../assets/sounds/piou-piou.mp3";
+
 export default class Jeu {
   constructor() {
     this.chanceEchecCritique = 1 / 5;
@@ -102,9 +107,9 @@ export default class Jeu {
       estDuCoteObscure: false,
       jeu: this,
       attaques: [
-        new Attaque("salto", 200, 40, this, "salto"),
-        new Attaque("tourni", 20, 30, this, "tourni"),
-        new Attaque("pointe", 10, 10, this, "pointe")
+        new Attaque("salto", 70, 40, this, "salto", piouFriouSound),
+        new Attaque("tourni", 20, 30, this, "tourni", friouSound),
+        new Attaque("pointe", 10, 10, this, "pointe", lightSaberSound)
       ],
       estChoisi: estLePersonnageChoisi
     });
@@ -120,9 +125,9 @@ export default class Jeu {
       nom: "vador",
       jeu: this,
       attaques: [
-        new Attaque("force", 55, 25, this, "force"),
-        new Attaque("envoyer son sabre", 15, 20, this, "launchsaber"),
-        new Attaque("regard perçant", 10, 10, this, "regard")
+        new Attaque("force", 55, 25, this, "force", piouSound),
+        new Attaque("envoyer son sabre", 15, 20, this, "launchsaber", lightSaberSound),
+        new Attaque("regard perçant", 10, 10, this, "regard", friouSound)
       ],
       estChoisi: estLePersonnageChoisi
     });
@@ -151,5 +156,11 @@ export default class Jeu {
       this.personnage.activerTousLesBoutons();
       this.menu.onClickWeapon();
     }
+  }
+
+  lancerConfetti() {
+    const videoConfetti = document.querySelector(".confetti");
+    videoConfetti.classList.remove("confetti-hidden");
+    videoConfetti.play();
   }
 }
