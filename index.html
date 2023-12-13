@@ -8,8 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/combat.css">
+
   <title>Le combat ultime</title>
 </head>
+
 <body>
   <header>
     <h1 class="rouge">
@@ -23,18 +28,24 @@
     <div class="personnages">
       <div class="personnage vador">
         <div id="div-canvas-vador">
-          <canvas id="canvas-vador"></canvas>
+          <!-- <canvas id="canvas-vador"></canvas> -->
         </div>
-        <!-- <img src="assets/dark_vador.jpg" alt="dark vador"> -->
+        <!-- <canvas id="canvas-vador"></canvas> -->
+        <img src="assets/dark_vador.jpg" alt="dark vador">
+
+        <script src="scripts/test3D.js" type="module"></script>
+
         <button class="red-illumination" value="vador">
           Je choisis mon pote Dark Vador !
         </button>
       </div>
       <div class="personnage luke">
         <div id="div-canvas-luke">
-          <canvas id="canvas-luke"></canvas>
+          <!-- <canvas id="canvas-luke"></canvas> -->
         </div>
-        <!-- <img src="assets/luke.jpg" alt="luke skylwaker"> -->
+        <!-- <canvas id="canvas-luke"></canvas> -->
+        <img src="assets/luke.jpg" alt="luke skylwaker">
+
         <button class="green-illumination" value="luke">
           Je choisis mon pote Luke !
         </button>
@@ -60,5 +71,6 @@
   <footer>
     <p>Contact : l'étoile noire</p>
   </footer>
+  <script src="scripts/index/main.js" type="module"></script>
 </body>
 </html>
