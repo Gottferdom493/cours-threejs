@@ -8,6 +8,7 @@ import Form from "./Form.js";
 // import vadorGltf from "../../assets/gltf/vador_v06.glb";
 
 new Form();
+// new Scene();
 new Scene("canvas-luke", ".luke");
 new Scene("canvas-vador", ".vador");
 

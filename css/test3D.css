@@ -1,15 +1,14 @@
 
-.grand-cube {
+#cube-vert {
   border-radius: 8px;
   border: 2px solid green;
-  height: 600px;
-  width: 50%;
+  height: 400px;
+  width: 30%;
 }
 
-.cube {
+#cube-rouge {
   border-radius: 8px;
   border: 2px solid red;
   height: 400px;
-  width: 50%;
-
+  width: 30%;
 }
