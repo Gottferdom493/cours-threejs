@@ -14,6 +14,10 @@ emplacement1.appendChild(renderer.domElement);
 //  document.body.appendChild( renderer.domElement );
 
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+
+//Affichage de l'objet 3D en fonction de son matériel. Plusieurs mode d'affichage existe comme MeshPhysicalMaterial.
+//Le mode MeshBasicMaterial n'utilse que des couleurs primaire mais pas de texture.
+//Le mode MeshPhysicalMaterial n'utilse que de texture et pour les voir il faut ajouter de la lumiere.
 const material = new THREE.MeshBasicMaterial( { color: 0xe39700  } );
 
 const mesh = new THREE.Mesh( geometry, material );
@@ -30,4 +34,3 @@ function animate() {
 animate();
 
 console.log(test333D);
-D
