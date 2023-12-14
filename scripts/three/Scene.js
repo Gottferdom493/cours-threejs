@@ -10,18 +10,20 @@ export default class Scene {
         this.createObjects();
         this.animate();
     }
-    
+
     createScene() {
         this.scene = new THREE.Scene();
     }
 
     createRenderer(idCanvas) {
-        const canvas = document.getElementById(idCanvas);
+        // const canvas = document.getElementById(idCanvas);
         // const divLuke = document.querySelector(".luke");
         // console.log(divLuke.innerWidth)
         this.renderer = new THREE.WebGLRenderer({canvas: canvas});
         this.renderer.setSize( this.divCanvas.clientWidth, this.divCanvas.clientHeight );
         // document.body.appendChild( this.renderer.domElement );
+        const personnages = document.getElementById('div-canvas-vador');
+        personnages.appendChild(renderer.domElement);
     }
 
     createCamera() {
