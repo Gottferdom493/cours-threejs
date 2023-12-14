@@ -22,11 +22,11 @@ const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 //Affichage de l'objet 3D en fonction de son matériel. Plusieurs mode d'affichage existe comme MeshPhysicalMaterial.
 //Le mode MeshBasicMaterial n'a pas besoin de lumiere car il n'utilse que des couleurs primaire mais pas de texture.
 //Le mode MeshPhysicalMaterial n'utilse que de texture et pour les voir il faut ajouter de la lumiere.
-const material = new THREE.MeshBasicMaterial( { color: 0xe39700  } );
+const material = new THREE.MeshPhysicalMaterial( { color: 0xe39700  } );
 
 //Ajout de la lumière dans la scéne
-// ambientLight = new THREE.AmbientLight(0xffffff);
-// scene.add(ambientLight)
+const ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(ambientLight)
 
 const mesh = new THREE.Mesh( geometry, material );
 scene.add( mesh );
