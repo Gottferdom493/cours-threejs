@@ -1,6 +1,10 @@
 // import * as THREE from "../node_modules/three/build/three.module.js";
 import * as THREE from "three";
 
+// import { OrbitControls } from "./node_modules/three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "OrbitControls";
+
+
 // import { GLTFLoader } from "../node_modules/three/examples/jsm/loaders/GLTFLoader.js";
 import { GLTFLoader } from "GLTFLoader";
 const loader = new GLTFLoader();
@@ -9,36 +13,16 @@ loader.load("../assets/gltf/Turbo-GLB.glb", (gltf) => {
   scene.add( gltf.scene );
 });
 
-// Load a glTF resource
-	// called when the resource is loaded
-// 	function ( gltf ) {
-
-
-// 	},
-// 	// called while loading is progressing
-// 	function ( xhr ) {
-
-// 		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-// 	},
-// 	// called when loading has errors
-// 	function ( error ) {
-
-// 		console.log( 'An error happened' );
-
-// 	}
-// );
-
-
-
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+
 const renderer = new THREE.WebGLRenderer();
+const controls = new OrbitControls( camera, renderer.domElement );
 const renderer2 = new THREE.WebGLRenderer();
 
-
-renderer.setSize( 500, 300 );
+//Réglage des dimensions de la page 3D
+renderer.setSize(  window.innerWidth,  window.innerHeight );
 renderer2.setSize( 500, 300 );
 
 const emplacement = document.getElementById('cube-rouge');
@@ -68,8 +52,8 @@ camera.position.z = 5;
 
 function animate() {
 	window.requestAnimationFrame( animate );
-        // mesh.rotation.x += 0.01;
-        // mesh.rotation.y += 0.01;
+        mesh.rotation.x += 0.01;
+        mesh.rotation.y += 0.01;
 	renderer.render( scene, camera );
   renderer2.render( scene, camera );
 
