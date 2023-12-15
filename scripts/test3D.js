@@ -9,7 +9,8 @@ import { OrbitControls } from "OrbitControls";
 import { GLTFLoader } from "GLTFLoader";
 const loader = new GLTFLoader();
 
-loader.load("../assets/gltf/Turbo-GLB.glb", (gltf) => {
+
+const geometry = loader.load("../assets/gltf/Turbo-GLB.glb", (gltf) => {
   scene.add( gltf.scene );
 });
 
@@ -18,8 +19,10 @@ const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.inner
 
 
 const renderer = new THREE.WebGLRenderer();
-const controls = new OrbitControls( camera, renderer.domElement );
 const renderer2 = new THREE.WebGLRenderer();
+
+//Permet de tourner et de déplacer l'objet avec la sourie
+const controls = new OrbitControls( camera, renderer.domElement );
 
 //Réglage des dimensions de la page 3D
 renderer.setSize(  window.innerWidth,  window.innerHeight );
@@ -32,7 +35,8 @@ emplacement.appendChild(renderer.domElement);
 secondEmplacement.appendChild(renderer2.domElement);
 //  document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry( 0, 0, 0 );
+//Ligne de commande pour afficher le cube jaune qui tourne
+// const geometry = new THREE.BoxGeometry( 0, 0, 0 );
 
 //Affichage de l'objet 3D en fonction de son matériel. Plusieurs mode d'affichage existe comme MeshPhysicalMaterial.
 //Le mode MeshBasicMaterial n'a pas besoin de lumiere car il n'utilse que des couleurs primaire mais pas de texture.
@@ -52,8 +56,9 @@ camera.position.z = 5;
 
 function animate() {
 	window.requestAnimationFrame( animate );
-        mesh.rotation.x += 0.01;
-        mesh.rotation.y += 0.01;
+  //Commande pour la rotation du cube jaune
+        // mesh.rotation.x += 0.01;
+        // mesh.rotation.y += 0.01;
 	renderer.render( scene, camera );
   renderer2.render( scene, camera );
 
