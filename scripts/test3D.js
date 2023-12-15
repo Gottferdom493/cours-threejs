@@ -43,10 +43,34 @@ secondEmplacement.appendChild(renderer2.domElement);
 //Le mode MeshPhysicalMaterial n'utilse que de texture et pour les voir il faut ajouter de la lumiere.
 const material = new THREE.MeshPhysicalMaterial( { color: 0xe39700  } );
 
-//Ajout de la lumière dans la scéne
+//Ajout de l'élément lumière
 const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(ambientLight)
+// const spotLight1 = new THREE.SpotLight( 0xffffff );
+// spotLight1.position.set( 0, 50, 0 );
+// const spotLight2 = new THREE.SpotLight( 0xffffff );
+// spotLight2.position.set( 0, -50, 0 );
+// const spotLight3 = new THREE.SpotLight( 0xffffff );
+// spotLight3.position.set( 50, 0, 0 );
+// const spotLight4 = new THREE.SpotLight( 0xffffff );
+// spotLight4.position.set( -50, 0, 0 );
+// const spotLight5 = new THREE.SpotLight( 0xffffff );
+// spotLight5.position.set( 50, 0, 70 );
+const spotLight6 = new THREE.SpotLight( 0xffffff );
+spotLight6.position.set( -5, 0, 5 );
+// const light = new THREE.DirectionalLight( 0xFFFFFF );
 
+// Modification de la couleur de l'arriére plan
+scene.background = new THREE.Color(0xD3D3D3);
+
+// Ajout de l'élément lumiére dans la scéne
+scene.add(ambientLight)
+// scene.add(spotLight1)
+// scene.add(spotLight2)
+// scene.add(spotLight3)
+// scene.add(spotLight4)
+// scene.add(spotLight5)
+scene.add(spotLight6)
+// scene.add(light)
 
 
 const mesh = new THREE.Mesh( geometry, material );
