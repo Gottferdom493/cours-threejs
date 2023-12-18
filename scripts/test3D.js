@@ -9,22 +9,23 @@ import { OrbitControls } from "OrbitControls";
 import { GLTFLoader } from "GLTFLoader";
 const loader = new GLTFLoader();
 
-
 // Permet le chargement du modéle
-
-const box = document.querySelector(".grand-parent")
-
-
-box.addEventListener('click',
-  ()=>{
-    console.log('click')
-
-  })
-
-
 const geometry = loader.load("../assets/gltf/Turbo-GLB.glb", (gltf) => {
   scene.add( gltf.scene );
 });
+
+
+
+// const box = document.querySelector(".grand-parent")
+
+
+// box.addEventListener('click',
+//   ()=>{
+//     console.log('click')
+
+//   })
+
+
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -75,6 +76,8 @@ const spotLight6 = new THREE.SpotLight( 0xffffff );
 spotLight6.position.set( -10, 0, 5 );
 // const light = new THREE.DirectionalLight( 0xFFFFFF );
 
+// Améliore la précéption visuelle
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 // Ajout de l'élément lumiére dans la scéne (intérupteur)
 scene.add(ambientLight)
