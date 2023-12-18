@@ -10,6 +10,18 @@ import { GLTFLoader } from "GLTFLoader";
 const loader = new GLTFLoader();
 
 
+// Permet le chargement du modéle
+
+const box = document.querySelector(".grand-parent")
+
+
+box.addEventListener('click',
+  ()=>{
+    console.log('click')
+
+  })
+
+
 const geometry = loader.load("../assets/gltf/Turbo-GLB.glb", (gltf) => {
   scene.add( gltf.scene );
 });
@@ -28,6 +40,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 renderer.setSize(  window.innerWidth,  window.innerHeight );
 renderer2.setSize( 500, 300 );
 
+//Permet de ranger l'affichage 3D dans un ID
 const emplacement = document.getElementById('cube-rouge');
 const secondEmplacement = document.getElementById('cube-vert');
 
@@ -43,7 +56,10 @@ secondEmplacement.appendChild(renderer2.domElement);
 //Le mode MeshPhysicalMaterial n'utilse que de texture et pour les voir il faut ajouter de la lumiere.
 const material = new THREE.MeshPhysicalMaterial( { color: 0xe39700  } );
 
-//Ajout de l'élément lumière
+// Modification de la couleur de l'arriére plan
+scene.background = new THREE.Color(0xADADAD);
+
+//Ajout de l'élément lumière (ampoule)
 const ambientLight = new THREE.AmbientLight(0xffffff);
 // const spotLight1 = new THREE.SpotLight( 0xffffff );
 // spotLight1.position.set( 0, 50, 0 );
@@ -56,13 +72,11 @@ const ambientLight = new THREE.AmbientLight(0xffffff);
 // const spotLight5 = new THREE.SpotLight( 0xffffff );
 // spotLight5.position.set( 50, 0, 70 );
 const spotLight6 = new THREE.SpotLight( 0xffffff );
-spotLight6.position.set( -5, 0, 5 );
+spotLight6.position.set( -10, 0, 5 );
 // const light = new THREE.DirectionalLight( 0xFFFFFF );
 
-// Modification de la couleur de l'arriére plan
-scene.background = new THREE.Color(0xD3D3D3);
 
-// Ajout de l'élément lumiére dans la scéne
+// Ajout de l'élément lumiére dans la scéne (intérupteur)
 scene.add(ambientLight)
 // scene.add(spotLight1)
 // scene.add(spotLight2)
