@@ -1,0 +1,23 @@
+.parent,.grand-parent{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grand-parent{
+  width: 21em;
+  height: 21em;
+  background: #005f73;
+}
+
+.parent{
+  width: 15em;
+  height: 15em;
+  background: #e9d8a6;
+}
+
+.enfant{
+  width: 8em;
+  height: 8em;
+  background: #bb3e03;
+}

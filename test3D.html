@@ -13,14 +13,32 @@
 
 
   <p>Test 3D</p>
+
+  <ul>
+		<li><a href="assets/gltf/Turbo-GLB.glb">Turbo</a></li>
+		<li><a href="assets/gltf/Macrostrombus-glb.glb">Macrostrombus</a></li>
+		<li><a href="assets/gltf/luke_v05.glb">Luke</a></li>
+	</ul>
+
+
   <div id ="cube-rouge" >
   </div>
   <div id="cube-vert" >
   </div>
 
+  <!-- Permet d'avoir les Url dans une constante -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./node_modules/three/build/three.module.js",
+        "GLTFLoader": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+        "OrbitControls" : "./node_modules/three/examples/jsm/controls/OrbitControls.js"
+      }
+    }
+  </script>
+
   <!-- Permet l'affichage de la fenetre 3D dans la page -->
   <script src="scripts/test3D.js" type="module"></script>
-
 
 </body>
 
